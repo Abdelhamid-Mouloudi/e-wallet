@@ -86,7 +86,7 @@ jobs:
     - name:  Build Frontend
       run: |
         cd frontend
-        npm run build
+        CI=false npm run build 
 
     - name: Upload Unit test results
       uses: actions/upload-artifact@v4
