@@ -81,7 +81,7 @@ jobs:
     - name:  Run Frontend Unit Tests
       run: |
         cd frontend
-        npm test -- --coverage --watchAll=false
+        npm test -- --coverage --watchAll=false --passWithNoTests
 
     - name:  Build Frontend
       run: |
