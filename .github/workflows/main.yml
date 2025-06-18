@@ -98,6 +98,17 @@ jobs:
         cd frontend
         npm test -- --coverage --watchAll=false --passWithNoTests
 
+    - name: SonarCloud Analysis (Frontend)
+      run: |
+       cd frontend
+       npm install -g sonarqube-scanner
+       sonar-scanner \
+         -Dsonar.projectKey=Abdelhamid-Mouloudi_e-wallet-frontend \
+         -Dsonar.organization=abdelhamid-mouloudi \
+         -Dsonar.sources=. \
+         -Dsonar.host.url=https://sonarcloud.io \
+         -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+
     - name:  Build Frontend
       run: |
         cd frontend
