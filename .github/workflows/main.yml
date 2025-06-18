@@ -73,7 +73,7 @@ jobs:
           -Dsonar.projectKey=Abdelhamid-Mouloudi_e-wallet \
           -Dsonar.organization=abdelhamid-mouloudi \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       env:
         SPRING_PROFILES_ACTIVE: test
         SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/ewallet_test
