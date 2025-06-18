@@ -66,6 +66,21 @@ jobs:
         SPRING_DATASOURCE_USERNAME: testuser
         SPRING_DATASOURCE_PASSWORD: testpass
 
+     - name: SonarCloud Analysis (Backend)
+      run: |
+        cd backend
+        mvn verify sonar:sonar \
+          -Dsonar.projectKey=Abdelhamid-Mouloudi_e-wallet \
+          -Dsonar.organization=abdelhamid-mouloudi \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+        SPRING_PROFILES_ACTIVE: test
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/ewallet_test
+        SPRING_DATASOURCE_USERNAME: testuser
+        SPRING_DATASOURCE_PASSWORD: testpass
+
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
