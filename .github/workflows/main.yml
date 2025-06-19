@@ -89,7 +89,7 @@ jobs:
     - name: Resolve Maven dependencies
       run: |
        cd backend
-       ./mvn dependency:resolve
+       mvn dependency:resolve
 
     - name: Snyk test (Backend)
       run: |
