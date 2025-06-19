@@ -80,6 +80,14 @@ jobs:
         SPRING_DATASOURCE_USERNAME: testuser
         SPRING_DATASOURCE_PASSWORD: testpass
 
+    - name: Snyk test (Backend)
+      uses: snyk/actions/maven@master
+      with:
+        args: test --all-projects
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -108,6 +116,14 @@ jobs:
          -Dsonar.sources=. \
          -Dsonar.host.url=https://sonarcloud.io \
          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+
+    - name: Snyk test (Frontend)
+      uses: snyk/actions/node@master
+      with:
+        args: test
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
 
     - name:  Build Frontend
       run: |
