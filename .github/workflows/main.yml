@@ -81,12 +81,11 @@ jobs:
         SPRING_DATASOURCE_PASSWORD: testpass
 
     - name: Snyk test (Backend)
-      uses: snyk/actions/maven@master
-      with:
-        args: test --all-projects
-        working-directory: ./backend
+      run: |
+        cd backend
+        snyk test --all-projects
       env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 
 
