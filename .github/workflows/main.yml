@@ -80,12 +80,21 @@ jobs:
         SPRING_DATASOURCE_USERNAME: testuser
         SPRING_DATASOURCE_PASSWORD: testpass
 
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+
+    - name: Resolve Maven dependencies
+      run: |
+       cd backend
+       mvn dependency:resolve
+
     - name: Snyk test (Backend)
       run: |
-        cd backend
-        npx snyk test 
+       cd backend
+       snyk test --debug
       env:
        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
 
 
 
