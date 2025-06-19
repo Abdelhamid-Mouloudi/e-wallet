@@ -83,10 +83,13 @@ jobs:
     - name: Install Snyk CLI
       run: npm install -g snyk
 
+    - name: Fix Maven wrapper permissions
+      run: chmod +x backend/mvnw
+
     - name: Resolve Maven dependencies
       run: |
        cd backend
-       mvn dependency:resolve
+       ./mvn dependency:resolve
 
     - name: Snyk test (Backend)
       run: |
