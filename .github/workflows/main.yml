@@ -84,6 +84,7 @@ jobs:
       uses: snyk/actions/maven@master
       with:
         args: test --all-projects
+        working-directory: ./backend
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
