@@ -133,7 +133,7 @@ jobs:
     - name: Install frontend dependencies
       run: |
        cd frontend
-       npm install
+       yarn install
        
 
     - name: Install Snyk CLI
