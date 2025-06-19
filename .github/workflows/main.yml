@@ -83,7 +83,7 @@ jobs:
     - name: Snyk test (Backend)
       run: |
         cd backend
-        snyk test --all-projects
+        npx snyk test --all-projects
       env:
        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
