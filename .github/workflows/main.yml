@@ -130,6 +130,11 @@ jobs:
          -Dsonar.host.url=https://sonarcloud.io \
          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
+    - name: Install frontend dependencies
+      run: |
+       cd frontend
+       npm install
+       
     - name: Snyk test (Frontend)
       uses: snyk/actions/node@master
       with:
