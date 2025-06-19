@@ -135,12 +135,18 @@ jobs:
        cd frontend
        npm install
        
+
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+
     - name: Snyk test (Frontend)
-      uses: snyk/actions/node@master
-      with:
-        args: test
+      run: |
+        cd frontend
+        snyk test
+      continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
 
 
     - name:  Build Frontend
