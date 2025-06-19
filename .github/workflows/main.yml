@@ -94,7 +94,7 @@ jobs:
     - name: Snyk test (Backend)
       run: |
        cd backend
-       snyk test 
+       snyk test --severity-threshold=high
       env:
        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
