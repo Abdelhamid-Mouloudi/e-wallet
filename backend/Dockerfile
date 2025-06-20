@@ -1,4 +1,4 @@
-# stage-1 : complete build environment
+ #complete build environment
 FROM maven:3.8.1-openjdk-17-slim AS builder
 RUN addgroup demogroup; adduser --ingroup demogroup --disabled-password demo
 USER demo
