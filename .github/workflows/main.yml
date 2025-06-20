@@ -99,7 +99,12 @@ jobs:
       env:
        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-
+    - name: Snyk monitor (Backend)
+      run: |
+        cd backend
+        snyk monitor
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 
     - name: Set up Node.js
@@ -134,7 +139,6 @@ jobs:
       run: |
        cd frontend
        yarn install
-       
 
     - name: Install Snyk CLI
       run: npm install -g snyk
@@ -146,6 +150,14 @@ jobs:
       continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: Snyk monitor (Frontend)
+      run: |
+        cd frontend
+        snyk monitor
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
 
 
 
