@@ -271,7 +271,8 @@ jobs:
 
     - name: Test Prometheus metrics endpoint
       run: |
-        curl -f http://${{ env.AZURE_WEBAPP_NAME }}-backend.azurewebsites.net/actuator/prometheus
+        curl -f https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus
+        
 
     - name: Push test metric to Grafana Cloud
       run: |
