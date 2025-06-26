@@ -121,7 +121,7 @@ jobs:
     - name:  Run Frontend Unit Tests
       run: |
         cd frontend
-        npm test -- --coverage --watchAll=false --passWithNoTests
+        npm test -- --coverage --watchAll=false 
 
     - name: SonarCloud Analysis (Frontend)
       run: |
