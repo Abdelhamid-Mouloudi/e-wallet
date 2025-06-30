@@ -182,11 +182,12 @@ jobs:
         cd frontend
         npx playwright install --with-deps
 
-    - name: Start frontend server in background
+
+    - name: Start Frontend App in background
       run: |
-        cd frontend
-        npm run preview &  # ou 'npm run dev &' selon ton script
-        wait-on http://localhost:3000
+       cd frontend
+       npm start &
+       npx wait-on http://localhost:3000
 
     - name: Run E2E Tests with Playwright
       run: |
