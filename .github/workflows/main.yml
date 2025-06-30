@@ -182,12 +182,15 @@ jobs:
         cd frontend
         npx playwright install --with-deps
 
+    - name: Install Serve
+      run: npm install -g serve
 
-    - name: Start Frontend App (CRA) in background
+    - name: Start Frontend App (static build)
       run: |
-       cd frontend
-       npm start > start.log 2>&1 &
-       npx wait-on http://localhost:3000 --timeout=60000 || (cat start.log && exit 1)
+        cd frontend
+        serve -s build -l 3000 > serve.log 2>&1 &
+        npx wait-on http://localhost:3000 --timeout=60000 || (cat serve.log && exit 1)
+
 
     - name: Run E2E Tests with Playwright
       run: |
