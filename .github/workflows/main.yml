@@ -185,6 +185,12 @@ jobs:
     - name: Install Serve
       run: npm install -g serve
 
+    - name: Start Backend in background
+      run: |
+       cd backend
+       mvn spring-boot:run > backend.log 2>&1 &
+       sleep 20  
+
     - name: Start Frontend App (static build)
       run: |
         cd frontend
