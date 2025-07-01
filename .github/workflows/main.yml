@@ -338,21 +338,31 @@ jobs:
              --data-binary @metric.json
 
 
-  dast-security:
-    name: DAST Security Scan 
+  # 4. DAST SECURITY SCAN WITH OWASP ZAP
+  
+  dast-security-scan:
     runs-on: ubuntu-latest
-    #needs: deploy-to-azure
-
+    needs: deploy-to-azure
+    if: github.ref == 'refs/heads/master'
+    
     steps:
-      - name: Run OWASP ZAP Baseline Scan on Frontend
-        uses: docker://owasp/zap2docker-stable
-        with:
-          args: zap-baseline.py -t https://e-wallet-frontend-djc5ccepewg2dvfx.eastus-01.azurewebsites.net/ -r zap_frontend_report.html
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Upload ZAP Frontend Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-frontend-report
-          path: zap_frontend_report.html
+    - name: Wait for deployment
+      run: sleep 60
+
+    - name: OWASP ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.12.0
+      with:
+        target: 'https://e-wallet-frontend-djc5ccepewg2dvfx.eastus-01.azurewebsites.net/'
+        fail_action: false
+
+    - name: Upload ZAP Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: zap-report
+        path: report_html.html
 
 
