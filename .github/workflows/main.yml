@@ -342,7 +342,7 @@ jobs:
   
   dast-security-scan:
     runs-on: ubuntu-latest
-    needs: deploy-to-azure
+    #needs: deploy-to-azure
     if: github.ref == 'refs/heads/master'
     
     steps:
