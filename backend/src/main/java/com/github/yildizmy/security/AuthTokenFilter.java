@@ -36,6 +36,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        String uri = request.getRequestURI();
+
+        //  Bypass JWT for actuator endpoints (metrics, prometheus, health, etc.)
+        if (uri != null && (uri.startsWith("/actuator") || uri.contains("/actuator"))) {
+            System.out.println("🔓 Bypass JWT for: " + uri);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {

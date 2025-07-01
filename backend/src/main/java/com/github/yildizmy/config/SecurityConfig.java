@@ -80,11 +80,10 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.authenticationProvider(authenticationProvider());
-        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        //httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
