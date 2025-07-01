@@ -350,7 +350,7 @@ jobs:
           args: zap-baseline.py -t https://e-wallet-frontend-djc5ccepewg2dvfx.eastus-01.azurewebsites.net/ -r zap_frontend_report.html
 
       - name: Upload ZAP Frontend Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: zap-frontend-report
           path: zap_frontend_report.html
