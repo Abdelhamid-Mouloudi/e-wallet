@@ -339,7 +339,6 @@ jobs:
 
 
     dast-security:
-    name: DAST Security Scan 
     runs-on: ubuntu-latest
     needs: deploy-to-azure
 
