@@ -370,17 +370,14 @@ jobs:
   
   dast-security-scan:
     runs-on: ubuntu-latest
-<<<<<<< HEAD
-    #needs: deploy-to-azure
-
-=======
     needs: deploy-to-azure
+
     if: github.ref == 'refs/heads/master'
     permissions:
       contents: read
       issues: write
     
->>>>>>> cb22bc215de220eef6863792a6fd56e0cd64634e
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
