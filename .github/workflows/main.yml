@@ -307,52 +307,98 @@ jobs:
             SPRING_PROFILES_ACTIVE="prod"
 
 
+    # NOUVELLE ÉTAPE : Configuration du monitoring AVANT les tests
+    - name: Configure App Settings for Monitoring
+      run: |
+        az webapp config appsettings set \
+          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --name ${{ env.AZURE_WEBAPP_NAME }}-backend \
+          --settings \
+            MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE="health,prometheus,info,metrics" \
+            MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED="true" \
+            MANAGEMENT_SECURITY_ENABLED="false" \
+            MANAGEMENT_ENDPOINTS_WEB_BASE_PATH="/actuator"
+
+    # Attendre le redémarrage de l'application
+    - name: Wait for application restart
+      run: sleep 60
 
     - name: Test Prometheus metrics endpoint
       run: |
-        curl -f https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus
-        
+        echo "Testing Prometheus endpoint accessibility..."
+        response=$(curl -s -o /dev/null -w "%{http_code}" https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus)
+        echo "HTTP Response Code: $response"
+        if [ "$response" = "200" ]; then
+          echo "✅ Prometheus endpoint is accessible"
+          curl -f https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus | head -20
+        else
+          echo "❌ Prometheus endpoint returned HTTP $response"
+          echo "Trying to get more information..."
+          curl -v https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus || true
+          exit 1
+        fi
 
     - name: Push test metric to Grafana Cloud
       run: |
-        timestamp=$(date +%s%N)
+        timestamp=$(date +%s%N | cut -b1-13)
         cat <<EOF > metric.json
         {
           "streams": [
             {
               "stream": {
                 "job": "e-wallet-backend",
-                "env": "prod"
+                "env": "prod",
+                "instance": "azure-prod"
               },
               "values": [
-                ["$timestamp", "{\"message\": \"deployment_success\"}"]
+                ["$timestamp", "deployment_success: E-wallet backend deployed successfully"]
               ]
             }
           ]
         }
         EOF
 
+        echo "Sending metric to Grafana Cloud..."
         curl -X POST "${{ secrets.GRAFANA_CLOUD_URL }}" \
              -u "${{ secrets.GRAFANA_CLOUD_USERNAME }}:${{ secrets.GRAFANA_CLOUD_API_KEY }}" \
              -H "Content-Type: application/json" \
-             --data-binary @metric.json
+             --data-binary @metric.json \
+             -w "HTTP Status: %{http_code}\n" || echo "Failed to send metric to Grafana Cloud"
 
 
-  dast-security:
-    name: DAST Security Scan 
+  # 4. DAST SECURITY SCAN WITH OWASP ZAP
+  
+  dast-security-scan:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
     #needs: deploy-to-azure
 
+=======
+    needs: deploy-to-azure
+    if: github.ref == 'refs/heads/master'
+    permissions:
+      contents: read
+      issues: write
+    
+>>>>>>> cb22bc215de220eef6863792a6fd56e0cd64634e
     steps:
-      - name: Run OWASP ZAP Baseline Scan on Frontend
-        uses: docker://owasp/zap2docker-stable
-        with:
-          args: zap-baseline.py -t https://e-wallet-frontend-djc5ccepewg2dvfx.eastus-01.azurewebsites.net/ -r zap_frontend_report.html
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Upload ZAP Frontend Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: zap-frontend-report
-          path: zap_frontend_report.html
+    - name: Wait for deployment
+      run: sleep 60
+
+    - name: OWASP ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.14.0
+      with:
+        target: 'https://e-wallet-frontend-djc5ccepewg2dvfx.eastus-01.azurewebsites.net/'
+        fail_action: false
+
+    - name: Upload ZAP Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: zap-report
+        path: report_html.html
 
 
