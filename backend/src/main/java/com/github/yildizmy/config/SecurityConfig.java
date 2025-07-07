@@ -88,7 +88,7 @@ public class SecurityConfig {
         //httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
-
+   /* @Bean
     @Order(1) // Priorité élevée pour les endpoints actuator
     public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
         http
@@ -104,7 +104,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
-    }
+    }*/
 
 
     @Bean
