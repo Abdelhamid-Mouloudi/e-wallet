@@ -31,6 +31,7 @@ import static com.github.yildizmy.common.Constants.ALLOWED_ORIGIN;
  * Configuration file used to configure security settings of the application.
  */
 @Configuration
+@Order(2)
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor

@@ -1,5 +1,6 @@
 package com.github.yildizmy.config;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,4 +23,9 @@ public class ActuatorSecurityConfig {
 
         return http.build();
     }
+    @PostConstruct
+    public void init() {
+        System.out.println("✅ ActuatorSecurityConfig loaded");
+    }
+
 }
