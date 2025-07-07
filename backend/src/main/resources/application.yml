@@ -43,7 +43,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: prometheus,health,info,metrics
   endpoint:
     prometheus:
       enabled: true
@@ -51,6 +51,8 @@ management:
     export:
       prometheus:
         enabled: true
+  security:
+      enabled: false
 
 logging:
   file:
