@@ -329,10 +329,10 @@ jobs:
         response=$(curl -s -o /dev/null -w "%{http_code}" https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus)
         echo "HTTP Response Code: $response"
         if [ "$response" = "200" ]; then
-          echo "✅ Prometheus endpoint is accessible"
+          echo " Prometheus endpoint is accessible"
           curl -f https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus | head -20
         else
-          echo "❌ Prometheus endpoint returned HTTP $response"
+          echo " Prometheus endpoint returned HTTP $response"
           echo "Trying to get more information..."
           curl -v https://e-wallet-backend-fqfsceajb5gab2bm.eastus-01.azurewebsites.net/actuator/prometheus || true
           exit 1
